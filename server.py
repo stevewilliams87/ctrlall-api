@@ -39,7 +39,7 @@ def convert():
     converted = [convert_variant(w, locale) for w in words]
     return jsonify({"converted": converted})
 
-# NEW: GET endpoint to return full inflected dictionary
+# GET endpoint to return full inflected dictionary
 @app.route("/api/spelling-variants")
 def get_spelling_variants():
     inflected_dict = defaultdict(dict)
@@ -51,8 +51,15 @@ def get_spelling_variants():
             token = doc[0]
 
             # Generate common inflections
-            inflections = set()
+            inflections: set[str] = set()
             inflections.add(base)
+
+            # Add plural manually for adjectives like "colour"
+            if base.endswith("our") and locale == "gb":
+                inflections.add(base + "s")  # e.g., colours
+            elif base.endswith("or") and locale == "us":
+                inflections.add(base + "s")  # e.g., colors
+
             for tag in ["NNS", "VBD", "VBG", "VBN", "VBZ"]:
                 inflected = token._.inflect(tag)
                 if inflected:
