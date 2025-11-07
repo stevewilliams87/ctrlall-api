@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: ctrlall-api
+    env: python
+    buildCommand: pip install -r requirements.txt && python -m spacy download en_core_web_sm
+    startCommand: python server.py
