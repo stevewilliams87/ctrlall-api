@@ -5,10 +5,16 @@ import os
 import lemminflect
 
 app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "API is running"
+
+
 nlp = spacy.load("en_core_web_sm")
 
-# Load spelling variants
-assets_path = os.path.join(os.path.dirname(__file__), "..", "assets", "images", "spellingVariants.json")
+# Load spelling variants from the same directory as server.py
+assets_path = os.path.join(os.path.dirname(__file__), "spellingVariants.json")
 with open(assets_path, "r") as f:
     variants = json.load(f)
 
