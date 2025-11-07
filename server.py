@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import spacy
 import json
 import os
@@ -6,6 +7,7 @@ import lemminflect
 from collections import defaultdict
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 @app.route("/")
 def home():
